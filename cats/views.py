@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.throttling import AnonRateThrottle
 
 from .models import Achievement, Cat, User
 
@@ -10,6 +11,7 @@ class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
     permission_classes = (IsOwnerOrReadOnly,)
+    throttle_classes = (AnonRateThrottle,)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
